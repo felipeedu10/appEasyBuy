@@ -33,7 +33,28 @@ const styles = StyleSheet.create({
         width: 280,
         height: 280,
         alignSelf: 'center',
-        marginBottom: "20%"
+        marginTop: '-22%',
+    },
+
+    video: {
+        width: 360,
+        height: 250
+    },
+
+    botao: {
+        backgroundColor: "white",
+        marginBottom: "30%",
+        marginLeft: "19%",
+        width: "60%",
+        height: "2.2%",
+        borderRadius: 5
+    },
+
+    conteudo_botao: {
+        textAlign: "center",
+        marginVertical: "2%",
+        fontWeight: "bold",
+        fontSize: 16
     }
 })
 

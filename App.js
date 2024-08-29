@@ -1,15 +1,23 @@
+import React, {useState, useEffect} from 'react';
 import {useFonts, SpaceGrotesk_300Light, SpaceGrotesk_700Bold} from '@expo-google-fonts/space-grotesk'
-import { View } from 'react-native';
+import { View, TouchableOpacity, Styles } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Texto from './src/componentes/texto';
 
+//Áudio
+import {Audio} from 'expo-av';
+
+//Telas
 import Produto from './src/telas/Produtos/';
 import SobreNos from './src/telas/SobreNos/';
 import Loja from './src/telas/Loja';
+import Camera from './src/telas/Camera';
 import mockProd from './src/mocks/produto';
 import mockSobre from './src/mocks/sobrenos';
 import mockLoja from './src/mocks/loja';
+import mockCamera from './src/mocks/camera.js';
 
 function MenuKit(){
   return <View>
@@ -28,6 +36,12 @@ function Produtos(){
     <Loja {...mockLoja}/>
    </View>
  
+};
+
+function Fotografar(){
+  return <View>
+    <Camera {...mockCamera}/>
+  </View>
 }
 
 const Tab = createBottomTabNavigator();
@@ -50,8 +64,11 @@ function TabsMenu(){
                 iconName = focused
                 ? 'list'
                 : 'list-outline'
-              }
-
+              }else if(route.name === "Camera"){
+                iconName = focused
+                ? 'list'
+                : 'list-outline'
+              }  
               return <Ionicons name={iconName} size={size} color={color}/>
             },
             tabBarActiveTintColor: 'black',
@@ -61,8 +78,46 @@ function TabsMenu(){
             <Tab.Screen name="Sobre nós" component={Sobre}/>
             <Tab.Screen name="Kit" component={MenuKit}/>
             <Tab.Screen name="Produtos" component={Produtos}/>
+            <Tab.Screen name="Camera" component={Fotografar}/>
           </Tab.Navigator>
 }
+
+function MenuAudio(){
+  const [audioStatus, setAudioStatus] = useState(false)
+  const [sound, setSound] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      console.log('status', audioStatus);
+      if (audioStatus) {
+        setLoading(true);
+        const { sound } = await Audio.Sound.createAsync(require('./assets/midia/acdc_highway_to_hell.mp3'));
+        setSound(sound);
+        try {
+          await sound.playAsync();
+        } catch (e) {
+          console.log(e);
+        }
+        setLoading(false);
+      } else {
+        if (sound) {
+          try {
+            await sound.stopAsync();
+            await sound.unloadAsync();
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      }
+    })();
+  }, [audioStatus]);
+
+  return <TouchableOpacity onPress={() => { if(!loading) {setAudioStatus(!audioStatus);}}}>
+            <Texto>🎧 On/Off</Texto>
+          </TouchableOpacity>
+}
+
 
 export default function App() {
   //Carrega a fonte para o projeto
@@ -77,5 +132,6 @@ export default function App() {
   }
   return <NavigationContainer>
       <TabsMenu />
+      <MenuAudio />
     </NavigationContainer>
 }

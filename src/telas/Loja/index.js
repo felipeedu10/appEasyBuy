@@ -1,6 +1,5 @@
 import React from 'react';
-import { FlatList,View, StyleSheet } from 'react-native';
-import { Button, Card, Text } from 'react-native-paper';
+import { FlatList, View } from 'react-native';
 
 import styles from './componentes/formatacao';
 import Item from './componentes/item';
