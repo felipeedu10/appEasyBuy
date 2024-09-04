@@ -66,8 +66,8 @@ function TabsMenu(){
                 : 'list-outline'
               }else if(route.name === "Camera"){
                 iconName = focused
-                ? 'list'
-                : 'list-outline'
+                ? 'camera'
+                : 'camera-outline'
               }  
               return <Ionicons name={iconName} size={size} color={color}/>
             },
@@ -92,7 +92,7 @@ function MenuAudio(){
       console.log('status', audioStatus);
       if (audioStatus) {
         setLoading(true);
-        const { sound } = await Audio.Sound.createAsync(require('./assets/midia/acdc_highway_to_hell.mp3'));
+        const { sound } = await Audio.Sound.createAsync(require('./assets/midia/AudioApp.mp3'));
         setSound(sound);
         try {
           await sound.playAsync();

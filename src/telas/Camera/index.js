@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, Platform } from 'react-native';
 import { Camera } from 'expo-camera';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function CameraScreen({ topo }) {
     const [hasPermission, setHasPermission] = useState(null);
@@ -8,25 +9,24 @@ export default function CameraScreen({ topo }) {
     const [photo, setPhoto] = useState(null);
     const cameraRef = useRef(null);
 
-    // Pedir permissão para usar a câmera
     useEffect(() => {
-        (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasPermission(status === 'granted');
-        })();
+        if (Platform.OS !== 'web') {
+            (async () => {
+                const { status } = await Camera.requestCameraPermissionsAsync();
+                setHasPermission(status === 'granted');
+            })();
+        } else {
+            setHasPermission(true); // Na web, a permissão é tratada pelo navegador
+        }
     }, []);
 
-    // Função para tirar a foto
     const takePicture = async () => {
         if (cameraRef.current) {
-            const data = await cameraRef.current.takePictureAsync({
-                quality: 1, // Ajuste a qualidade conforme necessário (0.1 a 1)
-            });
-            setPhoto(data.uri); // Salva o URI da foto
+            const data = await cameraRef.current.takePictureAsync({ quality: 1 });
+            setPhoto(data.uri);
         }
     };
 
-    // Função para alternar entre câmeras
     const toggleCameraType = () => {
         setCameraType(prevType => (
             prevType === Camera.Constants.Type.back
@@ -35,7 +35,6 @@ export default function CameraScreen({ topo }) {
         ));
     };
 
-    // Verificar permissão
     if (hasPermission === null) {
         return <Text>Solicitando permissão para usar a câmera...</Text>;
     }
@@ -43,11 +42,14 @@ export default function CameraScreen({ topo }) {
         return <Text>Permissão para acessar a câmera foi negada.</Text>;
     }
 
+    if (Platform.OS === 'web') {
+        return <CameraWeb />;
+    }
+
     return (
         <View style={styles.container}>
             <Text>{topo.titulo}</Text>
 
-            {/* Exibir a câmera ou a imagem capturada */}
             <View style={styles.cameraContainer}>
                 {photo ? (
                     <Image source={{ uri: photo }} style={styles.image} />
@@ -56,7 +58,7 @@ export default function CameraScreen({ topo }) {
                         style={styles.camera}
                         type={cameraType}
                         ref={cameraRef}
-                        ratio="16:9" // Proporção padrão para garantir que a câmera tenha dimensões válidas
+                        ratio="16:9"
                     />
                 )}
             </View>
@@ -64,9 +66,9 @@ export default function CameraScreen({ topo }) {
             <View style={styles.controls}>
                 {!photo && (
                     <>
-                        <TouchableOpacity onPress={takePicture} style={styles.buttonPic}/>
+                        <TouchableOpacity onPress={takePicture} style={styles.buttonPic} />
                         <TouchableOpacity onPress={toggleCameraType} style={styles.buttonFlip}>
-                            <Text style={styles.buttonFlipText}>Alternar Câmera</Text>
+                            <Ionicons name="camera-reverse" size={30} color="black" />
                         </TouchableOpacity>
                     </>
                 )}
@@ -83,13 +85,13 @@ const styles = StyleSheet.create({
     },
     cameraContainer: {
         flex: 1,
-        backgroundColor: 'black', // Fundo preto para emulador
+        backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center',
     },
     camera: {
-        width: width, // Largura total da tela
-        height: (width / 2) * 9, // Proporção 16:9
+        width: width,
+        height: (width / 2) * 9,
     },
     controls: {
         flexDirection: 'row',
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 100,
         marginTop: "150%",
-        marginLeft: "40%",
+        marginLeft: "32%",
         borderColor: 'white',
         borderWidth: 3,
         width: 80,
@@ -115,24 +117,48 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 3,
         marginTop: "5%",
-        width: "40%",
-        height: "30%",
+        width: 60,
+        height: 60,
         alignItems: 'center',
-        zIndex: 0, // Eleva o botão para frente de outros elementos
-    },
-    buttonText: {
-        fontSize: 20,
-        textAlign: 'center',
-    },
-    buttonFlipText: {
-        color: "black",
-        fontSize: 14,
-        textAlign: 'center',
+        justifyContent: 'center',
     },
     image: {
-        width: width, // Largura total da tela para a imagem
-        height: (width / 4) * 12, // Proporção 16:9
+        width: width,
+        height: (width / 4) * 12,
         resizeMode: 'contain',
-        marginTop: "50%"
+        marginTop: "50%",
     },
 });
+
+// Componente para a câmera na Web
+function CameraWeb() {
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        const getCameraStream = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+            } catch (error) {
+                console.error('Erro ao acessar a câmera: ', error);
+            }
+        };
+
+        getCameraStream();
+
+        return () => {
+            if (videoRef.current && videoRef.current.srcObject) {
+                let tracks = videoRef.current.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+        };
+    }, []);
+
+    return (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <video ref={videoRef} autoPlay style={{ width: '100%', height: '100%' }} />
+        </div>
+    );
+}
