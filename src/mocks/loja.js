@@ -13,6 +13,7 @@ const loja = {
         titulo:"Nossos Produtos",
         lista: [
             {
+                id: 1,
                 imagem: camisetaAdidas,
                 titulo: "Camiseta Adidas Trefoil",
                 subTitulo: "Melhor preço via Dafiti",
@@ -21,6 +22,7 @@ const loja = {
             },
 
             {
+                id: 2,
                 imagem: camisetaNike,
                 titulo: "Camiseta Nike SB",
                 subTitulo: "Melhor preço via Amazon",
@@ -29,6 +31,7 @@ const loja = {
             },
 
             {
+                id: 3,
                 imagem: moletomLevis,
                 titulo: "Moletom Levi's Standard",
                 subTitulo: "Melhor preço via C&A",
@@ -37,6 +40,7 @@ const loja = {
             },
 
             {
+                id: 4,
                 imagem: mangaLonga,
                 titulo: "Camiseta Manga Longa",
                 subTitulo: "Melhor preço via Renner",
@@ -45,6 +49,7 @@ const loja = {
             },
 
             {
+                id: 5,
                 imagem: tenisNike,
                 titulo: "Tênis Nike Air Force",
                 subTitulo: "Melhor preço via Centauro",
@@ -53,6 +58,7 @@ const loja = {
             },
 
             {
+                id: 6,
                 imagem: tenisAdidas,
                 titulo: "Tênis Adidas Duramo 10",
                 subTitulo: "Melhor preço via Netshoes",
@@ -61,6 +67,7 @@ const loja = {
             },
 
             {
+                id: 7,
                 imagem: calcaCargo,
                 titulo: "Camiseta Cargo Masculina",
                 subTitulo: "Melhor preço via Dafiti",
@@ -69,6 +76,7 @@ const loja = {
             },
 
             {
+                id: 8,
                 imagem: shortsJeans,
                 titulo: "Shorts Jeans Feminino",
                 subTitulo: "Melhor preço via Amazon",

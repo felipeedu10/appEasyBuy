@@ -14,6 +14,7 @@ import Produto from './src/telas/Produtos/';
 import SobreNos from './src/telas/SobreNos/';
 import Loja from './src/telas/Loja';
 import Camera from './src/telas/Camera';
+import Lista_Desejos from './src/telas/ListaDesejos/'
 import mockProd from './src/mocks/produto';
 import mockSobre from './src/mocks/sobrenos';
 import mockLoja from './src/mocks/loja';
@@ -64,11 +65,15 @@ function TabsMenu(){
                 iconName = focused
                 ? 'list'
                 : 'list-outline'
+              }else if(route.name === "Lista de Desejos"){
+                iconName = focused
+                ? 'heart'
+                : 'heart-outline'
               }else if(route.name === "Camera"){
                 iconName = focused
                 ? 'camera'
                 : 'camera-outline'
-              }  
+              }   
               return <Ionicons name={iconName} size={size} color={color}/>
             },
             tabBarActiveTintColor: 'black',
@@ -78,6 +83,7 @@ function TabsMenu(){
             <Tab.Screen name="Sobre nós" component={Sobre}/>
             <Tab.Screen name="Kit" component={MenuKit}/>
             <Tab.Screen name="Produtos" component={Produtos}/>
+            <Tab.Screen name="Lista de Desejos" component={Lista_Desejos}/>
             <Tab.Screen name="Camera" component={Fotografar}/>
           </Tab.Navigator>
 }
