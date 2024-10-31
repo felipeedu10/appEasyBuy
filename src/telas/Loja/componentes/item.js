@@ -59,7 +59,7 @@ export default function Item({item:{id, imagem, titulo, subTitulo, valor, dispon
             </Card.Content>
             <Card.Actions>
                 <TouchableOpacity onPress={() => addListaDesejos(id,titulo,imagem)}>
-                    <Ionicons name="heart" size={30} color="red" />
+                    <Ionicons name="heart" size={30} color="black" style={{marginRight: "45%"}}/>
                 </TouchableOpacity>
             </Card.Actions>
         </Card>

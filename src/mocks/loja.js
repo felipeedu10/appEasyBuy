@@ -69,7 +69,7 @@ const loja = {
             {
                 id: 7,
                 imagem: calcaCargo,
-                titulo: "Camiseta Cargo Masculina",
+                titulo: "Calça Cargo Masculina",
                 subTitulo: "Melhor preço via Dafiti",
                 valor: "R$ 155,50",
                 disponivel: "Disponível em 3 lojas"

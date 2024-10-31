@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
       textAlign: "center",
       fontSize: 24,
       fontWeight: "bold",
+      marginTop: '5%',
     },
   
     imagem: {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     },
 
     busca: {
-      marginTop: "10%", 
+      marginTop: "15%", 
       marginLeft: "50%",
       textAlign: "right",
       borderBottomColor: "black",

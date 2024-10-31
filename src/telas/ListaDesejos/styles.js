@@ -41,14 +41,23 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         fontWeight: "bold",
         fontSize: 26,
-        marginVertical: "5%"
+        marginVertical: "5%",
+        marginBottom: "20%"
     },
 
     textoLista: {
         fontSize: 16,
         paddingBottom: 10,
         textAlign: "center"
-    }   
+    }, 
+    
+    botaoExcluir: {
+        backgroundColor: "grey"
+    },
+
+    lixeira: {
+        alignSelf: "center",
+    }
 })
 
 export default styles;
